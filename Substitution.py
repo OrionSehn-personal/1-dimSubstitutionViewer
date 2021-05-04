@@ -114,8 +114,6 @@ return: True or False
 def isPiso(substitution):
 	return None
 
-
-
 '''-----------------------------------------------------------
 Substitution() Testing
 -----------------------------------------------------------'''
@@ -235,6 +233,22 @@ eigenval = eigenValues(sub)
 if (eigenval != None):
 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
 	print(f"PF EigenVector:\n{pfEigenVal(sub)}")
+
+print()
+sub = {"a":"abcec",
+	   "b":"cbbdaa",
+	   "c":"abdcec",
+	   "d":"ddacb",
+	   "e":"abcde"}
+eigenval = eigenValues(sub)
+if (eigenval != None):
+	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
+	curtime = time.time()
+	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nRight Eigenvectors: \n{eigenval[1]}")
+
+posttime = time.time()
+totaltime = posttime - curtime
+print(f"time: {totaltime}")
 
 '''-----------------------------------------------------------
 isPiso() Testing
