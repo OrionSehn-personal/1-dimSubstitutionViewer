@@ -86,19 +86,34 @@ return: A matrix describing the PF eigenvecotr of the given matrix
 
 
 '''
-def pfEigenVal(subsitution):
-	# eigval = eigenValues(substitution)
-	# eigenVectors = eigval[1]
-	# outvector = np.linalg.
-	# for vector in eigval:
-	# 	for 
+def pfEigenVal(substitution):
+	eigval = eigenValues(substitution)
+	eigenVectors = eigval[1]
+	for i in range(len(eigenVectors)):
+		vector = eigenVectors[:,i]
+		if (np.all(vector < 0)|(np.all(vector > 0))):
+			return np.real(vector/(vector[len(substitution)-1]))
+
+	print("PF EigenVector Not Found")
+	return None
+
+'''
+isPiso(substitution)
+
+Determines if a given substitution is "Piso", that is all other vectors
+other than the Perron-Frobenius, has a norm less than 1.
+
+parameters: 
+	substitution: a dictionary, describing the substitution
+
+return: True or False
+
+'''
 
 
-	# for value in eigenValues:
-	# 	if (value > 0):
-	# 		return value
-	# print("pfEigenValue was not found\n")
-	return False
+def isPiso(substitution):
+	return None
+
 
 
 '''-----------------------------------------------------------
@@ -163,22 +178,22 @@ matrix() Testing
 eigenValues() Testing
 -----------------------------------------------------------'''
 
-print()
-sub = {"a":"ab",
-	   "b":"a"}
-result = Substitution(sub, "a", 5)
-eigenval = eigenValues(sub)
-if (eigenval != None):
-	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
+# print()
+# sub = {"a":"ab",
+# 	   "b":"a"}
+# result = Substitution(sub, "a", 5)
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
 
-print()
-sub = {"a":"ab",
-	   "b":"c",
-	   "c":"a"}
-result = Substitution(sub, "a", 5)
-eigenval = eigenValues(sub)
-if (eigenval != None):
-	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
+# print()
+# sub = {"a":"ab",
+# 	   "b":"c",
+# 	   "c":"a"}
+# result = Substitution(sub, "a", 5)
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
 
 # print()
 # sub = {"a":"abc",
@@ -204,12 +219,23 @@ if (eigenval != None):
 pfEigenVal() Testing
 -----------------------------------------------------------'''
 
-# print()
-# sub = {"a":"ab",
-# 	   "b":"c",
-# 	   "c":"a"}
-# result = Substitution(sub, "a", 5)
-# eigenval = eigenValues(sub)
-# if (eigenval != None):
-# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
-# print(f"PF eigenValue: {pfEigenVal(eigenval[0])}\n")
+print()
+sub = {"a":"ab",
+	   "b":"a"}
+eigenval = eigenValues(sub)
+if (eigenval != None):
+	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
+	print(f"PF EigenVector:\n{pfEigenVal(sub)}")
+
+print()
+sub = {"a":"ab",
+	   "b":"c",
+	   "c":"a"}
+eigenval = eigenValues(sub)
+if (eigenval != None):
+	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
+	print(f"PF EigenVector:\n{pfEigenVal(sub)}")
+
+'''-----------------------------------------------------------
+isPiso() Testing
+-----------------------------------------------------------'''
