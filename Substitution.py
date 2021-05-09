@@ -98,9 +98,9 @@ def pfEigenVal(substitution):
 	return None
 
 '''
-isPiso(substitution)
+isPisot(substitution)
 
-Determines if a given substitution is "Piso", that is all other vectors
+Determines if a given substitution is "Pisot", that is all other vectors
 other than the Perron-Frobenius, has a norm less than 1.
 
 parameters: 
@@ -111,8 +111,48 @@ return: True or False
 '''
 
 
-def isPiso(substitution):
-	return None
+def isPisot(substitution):
+	#find PF eigenvalue
+	eigval, eigenVectors = eigenValues(substitution)
+
+	#Case 1: All eigenvalues are integers
+	if (pisotCase1(eigval)): return True
+
+	#Case 2: All eigenvalues (excepting the PF eigenvalue) are less than 1
+	for i in range(len(eigenVectors)): #find PF eigenValue
+		vector = eigenVectors[:,i]
+		if (np.all(vector < 0)|(np.all(vector > 0))):
+			eigenIndex = i
+			break
+	if (eigenIndex == len(eigenVectors)):
+		print("PF EigenVector Not Found")
+		return None
+	
+	eigval = np.delete(eigval, i, 0) #remove PF eigenvalue
+	absval = np.abs(eigval)
+	for value in absval:#check remaining eigenvalues
+		if (value > 1):
+			return False
+	return True	
+
+
+def pisotCase1(eigval):
+
+	if (isinstance(eigval[0], float)): #if the array is of real floats
+		for eigenValue in eigval:
+			if (not eigenValue.is_integer()): return False
+		return True
+
+	if (isinstance(eigval[0], np.complex)): #if the array is complex
+		print("cnum")
+
+		for eigenValue in eigval:
+			if (eigenValue.imag != 0): return False
+		
+		for eigenValue in eigval:
+			if (not eigenValue.real.is_integer()): return False
+		return True
+
 
 '''-----------------------------------------------------------
 Substitution() Testing
@@ -217,39 +257,72 @@ eigenValues() Testing
 pfEigenVal() Testing
 -----------------------------------------------------------'''
 
+# print()
+# sub = {"a":"ab",
+# 	   "b":"a"}
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
+# 	print(f"PF EigenVector:\n{pfEigenVal(sub)}")
+
+# print()
+# sub = {"a":"ab",
+# 	   "b":"c",
+# 	   "c":"a"}
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
+# 	print(f"PF EigenVector:\n{pfEigenVal(sub)}")
+
+# print()
+# sub = {"a":"abcec",
+# 	   "b":"cbbdaa",
+# 	   "c":"abdcec",
+# 	   "d":"ddacb",
+# 	   "e":"abcde"}
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
+# 	curtime = time.time()
+# 	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nRight Eigenvectors: \n{eigenval[1]}")
+
+# posttime = time.time()
+# totaltime = posttime - curtime
+# print(f"time: {totaltime}")
+
+'''-----------------------------------------------------------
+isPisot() Testing
+-----------------------------------------------------------'''
+
+
+# print()
+# sub = {"a":"ab",
+# 	   "b":"c",
+# 	   "c":"a"}
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
+# 	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
+
+
+
 print()
-sub = {"a":"ab",
+sub = {"a":"abb",
 	   "b":"a"}
 eigenval = eigenValues(sub)
 if (eigenval != None):
-	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
-	print(f"PF EigenVector:\n{pfEigenVal(sub)}")
+	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
+	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
 
-print()
-sub = {"a":"ab",
-	   "b":"c",
-	   "c":"a"}
-eigenval = eigenValues(sub)
-if (eigenval != None):
-	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
-	print(f"PF EigenVector:\n{pfEigenVal(sub)}")
 
-print()
-sub = {"a":"abcec",
-	   "b":"cbbdaa",
-	   "c":"abdcec",
-	   "d":"ddacb",
-	   "e":"abcde"}
-eigenval = eigenValues(sub)
-if (eigenval != None):
-	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}")
-	curtime = time.time()
-	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nRight Eigenvectors: \n{eigenval[1]}")
 
-posttime = time.time()
-totaltime = posttime - curtime
-print(f"time: {totaltime}")
-
-'''-----------------------------------------------------------
-isPiso() Testing
------------------------------------------------------------'''
+# print()
+# sub = {"a":"abcec",
+# 	   "b":"cbbdaa",
+# 	   "c":"abdcec",
+# 	   "d":"ddacb",
+# 	   "e":"abcde"}
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
+# 	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
