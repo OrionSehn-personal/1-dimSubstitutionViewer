@@ -128,12 +128,13 @@ def isPisot(substitution):
 	if (eigenIndex == len(eigenVectors)):
 		print("PF EigenVector Not Found")
 		return None
-	#remove PF eigenvalue
+	#exclude PF eigenvalue
 	eigval = np.delete(eigval, i, 0) 
 	absval = np.abs(eigval)
-	for value in absval:#check remaining eigenvalues
-		if (value > 1):
-			return False
+	for value in absval:#check remaining eigenvalues against 1
+		if (value > 0.99999999999999): #check slightly lower than 1, because of float rounding
+ 			return False
+
 	return True	
 '''-----------------------------------------------------------
 Helper function to handle Case 1 for the Pisot Condition:
@@ -148,10 +149,9 @@ def pisotCase1(eigval):
 		return True
 
 	if (isinstance(eigval[0], np.complex)): #if the array is complex
-
+		#Rounds both imaginary portions, and real portions to see if
+		#All portions are integers (within 15 decimal points)
 		for eigenValue in eigval:
-			if (eigenValue.imag != 0): return False
-		
-		for eigenValue in eigval:
-			if (not eigenValue.real.is_integer()): return False
+			if (round(eigenValue.imag, 15) != 0): return False
+			if (not round(eigenValue.real,15).is_integer()): return False
 		return True

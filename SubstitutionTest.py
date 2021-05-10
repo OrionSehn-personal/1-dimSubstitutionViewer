@@ -152,7 +152,6 @@ def isPisotTest():
 		print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
 
 
-
 	print()
 	sub = {"a":"abbb",
 		"b":"a"}
