@@ -17,9 +17,6 @@ for segment in result:
 	newSegment.append((xvalue, 0))
 	segments.append(newSegment)
 
-
-
-
 print(pfEigenVector)
 print(segments)
 print(result)
@@ -28,11 +25,7 @@ c = []
 for segment in result:
 	c.append(colorlist[keys.index(segment)])
 
-
-
-
 print(c)
-
 linecol = mc.LineCollection(segments, linewidths=15, colors=c)
 fig, ax = plt.subplots()
 ax.add_collection(linecol)
