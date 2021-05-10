@@ -182,5 +182,5 @@ def testAll():
 	pfEigenValTest()
 	isPisotTest()
 
-# testAll()
-isPisotTest()
+testAll()
+# isPisotTest()
