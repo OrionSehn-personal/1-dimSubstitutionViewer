@@ -116,10 +116,11 @@ def isPisot(substitution):
 	eigval, eigenVectors = eigenValues(substitution)
 
 	#Case 1: All eigenvalues are integers
-	if (pisotCase1(eigval)): return True
+	if (pisotCase1(eigval)): return True #helper funciton to handle Case 1
 
 	#Case 2: All eigenvalues (excepting the PF eigenvalue) are less than 1
-	for i in range(len(eigenVectors)): #find PF eigenValue
+	#find PF eigenValue
+	for i in range(len(eigenVectors)): 
 		vector = eigenVectors[:,i]
 		if (np.all(vector < 0)|(np.all(vector > 0))):
 			eigenIndex = i
@@ -127,14 +128,17 @@ def isPisot(substitution):
 	if (eigenIndex == len(eigenVectors)):
 		print("PF EigenVector Not Found")
 		return None
-	
-	eigval = np.delete(eigval, i, 0) #remove PF eigenvalue
+	#remove PF eigenvalue
+	eigval = np.delete(eigval, i, 0) 
 	absval = np.abs(eigval)
 	for value in absval:#check remaining eigenvalues
 		if (value > 1):
 			return False
 	return True	
-
+'''-----------------------------------------------------------
+Helper function to handle Case 1 for the Pisot Condition:
+That all eigenvalues are integers. 
+-----------------------------------------------------------'''
 
 def pisotCase1(eigval):
 
@@ -144,7 +148,6 @@ def pisotCase1(eigval):
 		return True
 
 	if (isinstance(eigval[0], np.complex)): #if the array is complex
-		print("cnum")
 
 		for eigenValue in eigval:
 			if (eigenValue.imag != 0): return False
@@ -296,24 +299,23 @@ isPisot() Testing
 
 
 # print()
-# sub = {"a":"ab",
+# sub = {"a":"abbb",
 # 	   "b":"c",
-# 	   "c":"a"}
+# 	   "c": "ab"}
 # eigenval = eigenValues(sub)
 # if (eigenval != None):
-# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}")
 # 	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
 
 
 
-print()
-sub = {"a":"abb",
-	   "b":"a"}
-eigenval = eigenValues(sub)
-if (eigenval != None):
-	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
-	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
-
+# print()
+# sub = {"a":"abbb",
+# 	   "b":"a"}
+# eigenval = eigenValues(sub)
+# if (eigenval != None):
+# 	print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}")
+# 	print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
 
 
 # print()
