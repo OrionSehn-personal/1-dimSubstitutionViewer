@@ -113,6 +113,7 @@ def analyzeSubstitution(sub, iterations, debug=False):
 		totaltime = posttime - curtime
 		print(f"draw time: {totaltime}")
 
+	plt.rcParams["figure.figsize"] = (80,60)
 
 	
 	# print(f"Substitution is Pisot-Frobenius: {isPisot(sub)}")
