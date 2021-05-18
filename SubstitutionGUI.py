@@ -87,7 +87,7 @@ def analyzeSubstitution(sub, iterations, debug=False):
 	-----------------------------------------------------------'''
 	if (debug == True):
 		curtime = time.time()
-	fig, ax = plt.subplots(2, 1, figsize = (40, 30))
+	fig, ax = plt.subplots(2, 1, figsize = (40, 30), dpi = 100)
 	legendCol = mc.LineCollection(legendList, linewidths=10, colors=legendCol)
 	ax[0].add_collection(legendCol)
 	ax[0].margins(0.01)
