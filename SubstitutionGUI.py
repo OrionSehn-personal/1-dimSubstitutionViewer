@@ -122,15 +122,15 @@ def analyzeSubstitution(sub, iterations, debug=False):
 
 # sub = {"a":"ab",
 # 	   "b":"a" }
-sub = { "a":"abcec",
-		"b":"cbbdaa",
-		"c":"abdcec",
-		"d":"ddacb",
-		"e":"abcdef",
-		"f" :"a"}
+# sub = { "a":"abcec",
+# 		"b":"cbbdaa",
+# 		"c":"abdcec",
+# 		"d":"ddacb",
+# 		"e":"abcdef",
+# 		"f" :"a"}
 
 # analyzeSubstitution(sub, 4, debug=True)
-analyzeSubstitution(sub, 2)
+# analyzeSubstitution(sub, 2)
 
 
 
