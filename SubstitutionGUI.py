@@ -50,7 +50,6 @@ def analyzeSubstitution(sub, iterations, debug=False):
 	if (debug == True):
 		curtime = time.time()
 
-
 	#setting up a list of colors to match the substitution result
 	colorlist = ["#e89f73", "#4c91d1", "#c28897", "#c4e0ef", "#a0a5b1"]
 	c = []
@@ -113,25 +112,17 @@ def analyzeSubstitution(sub, iterations, debug=False):
 		totaltime = posttime - curtime
 		print(f"draw time: {totaltime}")
 
-
-	
-	# print(f"Substitution is Pisot-Frobenius: {isPisot(sub)}")
-
-
 	plt.show()
-
-# sub = {"a":"ab",
-# 	   "b":"a" }
+	
 # sub = { "a":"abcec",
 # 		"b":"cbbdaa",
 # 		"c":"abdcec",
 # 		"d":"ddacb",
 # 		"e":"abcdef",
 # 		"f" :"a"}
-
 # analyzeSubstitution(sub, 4, debug=True)
-# analyzeSubstitution(sub, 2)
 
-
-
+sub = {"a":"ab",
+	   "b":"a" }
+analyzeSubstitution(sub, 5)
 
