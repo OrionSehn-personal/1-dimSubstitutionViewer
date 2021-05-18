@@ -87,7 +87,7 @@ def analyzeSubstitution(sub, iterations, debug=False):
 	-----------------------------------------------------------'''
 	if (debug == True):
 		curtime = time.time()
-	fig, ax = plt.subplots(2, 1)
+	fig, ax = plt.subplots(2, 1, figsize = (40, 30))
 	legendCol = mc.LineCollection(legendList, linewidths=10, colors=legendCol)
 	ax[0].add_collection(legendCol)
 	ax[0].margins(0.01)
@@ -113,7 +113,6 @@ def analyzeSubstitution(sub, iterations, debug=False):
 		totaltime = posttime - curtime
 		print(f"draw time: {totaltime}")
 
-	plt.rcParams["figure.figsize"] = (80,60)
 
 	
 	# print(f"Substitution is Pisot-Frobenius: {isPisot(sub)}")
