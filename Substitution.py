@@ -49,7 +49,7 @@ def matrix(substitution):
 		matString = matString + ";"
 	matString = matString[1:-1]
 	mat = np.mat(matString)
-	return mat
+	return mat.transpose()
 
 '''
 eigenValues(substitution)
