@@ -154,3 +154,56 @@ def pisotCase1(eigval):
 			if (round(eigenValue.imag, 15) != 0): return False
 			if (not round(eigenValue.real,15).is_integer()): return False
 		return True
+
+
+'''
+diffraction(sub, lowerbound=0, upperbound=10, interval=0.01, k=20)
+	Generates a diffraction pattern given a substitution. Returns x and y values 
+    to draw the substitution. 
+
+parameters:
+    sub: Dictionary representing a Substitution from which the diffraction pattern
+         is generated. 
+    lowerbound=0: The lower bound of the diffraction pattern
+    upperbound=10: Upper bound of the diffraction pattern
+    interval=0.01: Space between the individual data points along the x axis
+    k=20: Number of points in the substitution for which to perform the diffraction
+	
+
+return: Two arrays x and y which represent the x and y coordinates of the points to
+        draw the diffraction. 
+'''
+
+def diffraction(sub, lowerbound=0, upperbound=10, interval=0.01, k=20):
+
+    #TODO Something else
+    pfEigenVector = Substitution.pfEigenVal(sub)
+    symbolic = Substitution.Substitution(sub, "a", 7) #TODO figure out how many substitution iterations I need to do to reach a minimum of k points
+    symbolic = symbolic[0:k]
+    print(len(symbolic))
+    points = []
+    xvalue = 0
+    keys = list(sub.keys())
+
+    for point in symbolic:
+        xvalue += pfEigenVector[keys.index(point), 0]
+        newPoint = xvalue
+        points.append(newPoint)
+
+    points = np.array(points)
+    x = np.arange(lowerbound, upperbound, interval)
+    t = x * 2* np.pi
+    y = []
+    for time in t: 
+        out = points * time
+
+        left = np.cos(out)
+        left = np.sum(left)
+        left = left ** 2
+        right = np.sin(out)
+        right = np.sum(right)
+        right = right **2
+        final = (1/len(points)**2) * (left + right)
+        y.append(final)
+
+    return x, y

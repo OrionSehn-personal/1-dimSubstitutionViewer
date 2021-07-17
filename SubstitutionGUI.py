@@ -71,6 +71,7 @@ def analyzeSubstitution(sub, iterations, debug=False):
         posttime = time.time()
         totaltime = posttime - curtime
         print(f"color time: {totaltime}")
+    
     '''-----------------------------------------------------------
     Legend Construction
     -----------------------------------------------------------'''
@@ -122,6 +123,7 @@ def analyzeSubstitution(sub, iterations, debug=False):
 '''-----------------------------------------------------------------------------
 Edit this portion to plot a given substitution described in the following way:
 -----------------------------------------------------------------------------'''
+
 
 sub = {"a":"abc",
        "b":"bc",
