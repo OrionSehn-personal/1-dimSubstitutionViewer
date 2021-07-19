@@ -172,15 +172,32 @@ def isPisotTest():
 		print(f"Substitution: {sub}\nMatrix:\n{matrix(sub)}\nEigenValues: {eigenval[0]}\nRight Eigenvectors: \n{eigenval[1]}")
 		print(f"PF EigenVector:\n{pfEigenVal(sub)}\nSubstitution is Pisot:{isPisot(sub)}")
 
+
+'''-----------------------------------------------------------
+isValid() Testing
+-----------------------------------------------------------'''
+def isValidTest():
+	sub = {"a":"ab",
+		"b":"a"}
+	print(f"substitution: {sub} is Valid: {isValid(sub)}")
+
+	sub = {"a":"abbdb",
+		"b":"c",
+		"c": "ab"}
+	print(f"substitution: {sub} is Valid: {isValid(sub)}")
+
+
 '''-----------------------------------------------------------
 Testing All 
 -----------------------------------------------------------'''
+
 def testAll():
 	subsitutionTest()
 	matrixTest()
 	eigenValuesTest()
 	pfEigenValTest()
 	isPisotTest()
+	isValidTest()
+
 
 testAll()
-# isPisotTest()

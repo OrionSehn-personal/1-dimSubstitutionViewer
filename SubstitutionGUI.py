@@ -120,10 +120,6 @@ def analyzeSubstitution(sub, iterations, debug=False):
 
     plt.show()
 
-'''-----------------------------------------------------------------------------
-Edit this portion to plot a given substitution described in the following way:
------------------------------------------------------------------------------'''
-
 
 def substitutioninfo(sub):
     pfEigenVector = pfEigenVal(sub)
@@ -137,7 +133,7 @@ def substitutioninfo(sub):
 
 def GUI():
     header = '''-----------------------------------------------------------------------------
-    Subsitution Viewer - Orion Sehn 2021
+    One Dimenstional Subsitution Viewer - Orion Sehn 2021
 -----------------------------------------------------------------------------'''
 
     options = '''
@@ -167,47 +163,87 @@ def GUI():
                     variable = chr(asciicode)
                     newsub[variable] = input(f"Substitute {variable} with: ").strip()
                     asciicode += 1
-        #TODO check if the new substitution is "Valid"
-        sub = newsub
-        print("New substitution defined: ")
-        print(sub)
+            if isValid(newsub):
+                print("New substitution defined: ")
+                print(newsub)
+                sub = newsub
+            else:
+                print(f"Substitution {newsub} is not a valid substitution")
 
         if (userinput.strip() == "2"):
             print("Printing info about the Substitution")
             substitutioninfo(sub)
 
         if (userinput.strip() == "3"):
+            errorFlag = False
             print("Printing a symbolic text representaion of the Substitution")
-            print(Substitution(sub, "a", 5))
+            custom = input("Enter c to enter custom parameters or press enter to use default settings (iterations = 5, initialstate 'a'): ")
+            if (custom.strip() == "c"):
+
+                iterations = input("Enter a number of iterations: ")
+                initialState = input("Define an initial state ie. (abba): ")
+                #Error checking input for validity
+                try: 
+                    iterations = int(iterations)
+                except:
+                    print("Iterations must be a natural number")
+                    errorFlag = True
+                if (errorFlag == False):
+                    if (iterations < 0):
+                        print("Iterations must be greater than or equal to 0")
+                        errorFlag = True
+                if (errorFlag == False):
+                    for char in initialState:
+                        if (char not in sub.keys()):
+                            print(f"Initialstate: {initialState} is not valid")
+                            errorFlag = True
+                #Printing subsitution with custom parameters
+                if (errorFlag == False):
+                    print()
+                    print(Substitution(sub, initialState, int(iterations)))
+
+            else: 
+                print(Substitution(sub, "a", 5))
 
 
         if (userinput.strip() == "4"):
             print("Displaying a segment diagram of the substitution")
-            iterations = 5
+            iterations = 6
             analyzeSubstitution((sub), iterations)
 
 
         if (userinput.strip() == "5"):
+            errorFlag = False
             print("Displaying diffraction pattern of the Substitution")
-            x, y = diffraction(sub)
-            plt.plot(x, y)
-            plt.show()
+            custom = input("Enter c to enter custom parameters or press enter to use default settings(0 < x < 10, x interval = 0.01, k = 20): ")
+            
+            if (custom.strip() == "c"):
+                xlower = input("Enter lower bound for x: ")
+                xupper = input("Enter upper bound for x: ")
+                xint = input("Enter value for x interval: ")
+                k = input("Enter value for k: ")
+                try:
+                    int(xlower)
+                    int(xupper)
+                    float(xint)
+                    int(k)
+                except:
+                    print("xlower, xupper and k must be natural numebrs, xint must be a decimal")
+                    errorFlag = True
+
+                if (errorFlag == False):
+                    x, y = diffraction(sub, int(xlower), int(xupper), float(xint), int(k))
+                    plt.plot(x, y)
+                    plt.show()
+
+            else:
+                x, y = diffraction(sub)
+                plt.plot(x, y)
+                plt.show()
 
         if (userinput.strip() == "6"):
             print("Quit")
             return
         
-
-
-
-
-
-
-
-sub = {"a":"abc",
-       "b":"bc",
-       "c":"a"}
- 
-# analyzeSubstitution(sub, iterations = 6, debug = True)
 
 GUI()

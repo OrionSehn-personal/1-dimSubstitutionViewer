@@ -206,3 +206,25 @@ def diffraction(sub, lowerbound=0, upperbound=10, interval=0.01, k=20):
         y.append(final)
 
     return x, y
+
+
+'''
+isValid(sub)
+	Returns a boolean value representing the validity of the substitution.
+
+parameters:
+    sub: Dictionary representing a Substitution of which the validity is to
+	be determined
+    
+return: Boolean value
+'''
+def isValid(sub):
+
+	if len(sub) == 0:
+		return False
+	#if a substitution contains a character which is not a variable, it is not valid
+	for value in (sub.values()): 
+		for char in value:
+			if (char not in sub.keys()):
+				return False
+	return True 
