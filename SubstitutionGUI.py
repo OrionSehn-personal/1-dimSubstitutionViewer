@@ -15,16 +15,16 @@ def analyzeSubstitution(sub, iterations, debug=False):
  
     pfEigenVector = pfEigenVal(sub)
     result = Substitution(sub, "a", iterations)
-    print("--------------------------------------------------------------")
-    print(f"Substitution: \n{sub}")
-    print(f"Iterations: {iterations}")
-    print(f"Symbolic Representation: \n{result}")
-    print("--------------------------------------------------------------")
-    print(f"Matrix: \n{matrix(sub)}")
-    print(f"Perron-Frobenius Eigenvector: \n{pfEigenVector}")
-    print(f"Eigenvalues: \n{eigenValues(sub)[0]}")
-    print(f"Substitution is Pisot: {isPisot(sub)}")
-    print("--------------------------------------------------------------")
+    # print("--------------------------------------------------------------")
+    # print(f"Substitution: \n{sub}")
+    # print(f"Iterations: {iterations}")
+    # print(f"Symbolic Representation: \n{result}")
+    # print("--------------------------------------------------------------")
+    # print(f"Matrix: \n{matrix(sub)}")
+    # print(f"Perron-Frobenius Eigenvector: \n{pfEigenVector}")
+    # print(f"Eigenvalues: \n{eigenValues(sub)[0]}")
+    # print(f"Substitution is Pisot: {isPisot(sub)}")
+    # print("--------------------------------------------------------------")
 
     if (debug == True):
         print("Analysis time breakdown:")
@@ -125,9 +125,89 @@ Edit this portion to plot a given substitution described in the following way:
 -----------------------------------------------------------------------------'''
 
 
+def substitutioninfo(sub):
+    pfEigenVector = pfEigenVal(sub)
+    print("--------------------------------------------------------------")
+    print(f"Substitution: \n{sub}")
+    print(f"Matrix: \n{matrix(sub)}")
+    print(f"Perron-Frobenius Eigenvector: \n{pfEigenVector}")
+    print(f"Eigenvalues: \n{eigenValues(sub)[0]}")
+    print(f"Substitution is Pisot: {isPisot(sub)}")
+    print("--------------------------------------------------------------")
+
+def GUI():
+    header = '''-----------------------------------------------------------------------------
+    Subsitution Viewer - Orion Sehn 2021
+-----------------------------------------------------------------------------'''
+
+    options = '''
+    1 - Define a Substitution
+    2 - View info about the Substitution
+    3 - View a symbolic text representaion of the Substitution
+    4 - View a segment diagram of the substitution
+    5 - View the diffraction pattern of the Substitution
+    6 - Quit
+    '''
+    sub = {"a":"ab",
+           "b":"a"}
+
+    exit = False
+    userinput = ""
+    while (exit == False):
+        print(header)
+        print(options, "")
+        userinput = input()
+        if (userinput.strip() == "1"):
+            print("Defining Substitution - (enter nothing to cancel)")
+            numVar = input("Number of Variables: ")
+            if (numVar != ""):
+                asciicode = 97
+                newsub = dict()
+                for i in range(int(numVar)):
+                    variable = chr(asciicode)
+                    newsub[variable] = input(f"Substitute {variable} with: ").strip()
+                    asciicode += 1
+        #TODO check if the new substitution is "Valid"
+        sub = newsub
+        print("New substitution defined: ")
+        print(sub)
+
+        if (userinput.strip() == "2"):
+            print("Printing info about the Substitution")
+            substitutioninfo(sub)
+
+        if (userinput.strip() == "3"):
+            print("Printing a symbolic text representaion of the Substitution")
+            print(Substitution(sub, "a", 5))
+
+
+        if (userinput.strip() == "4"):
+            print("Displaying a segment diagram of the substitution")
+            iterations = 5
+            analyzeSubstitution((sub), iterations)
+
+
+        if (userinput.strip() == "5"):
+            print("Displaying diffraction pattern of the Substitution")
+            x, y = diffraction(sub)
+            plt.plot(x, y)
+            plt.show()
+
+        if (userinput.strip() == "6"):
+            print("Quit")
+            return
+        
+
+
+
+
+
+
+
 sub = {"a":"abc",
        "b":"bc",
        "c":"a"}
  
-analyzeSubstitution(sub, iterations = 6, debug = True)
+# analyzeSubstitution(sub, iterations = 6, debug = True)
 
+GUI()

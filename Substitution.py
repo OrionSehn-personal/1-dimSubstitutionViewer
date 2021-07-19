@@ -177,10 +177,9 @@ return: Two arrays x and y which represent the x and y coordinates of the points
 def diffraction(sub, lowerbound=0, upperbound=10, interval=0.01, k=20):
 
     #TODO Something else
-    pfEigenVector = Substitution.pfEigenVal(sub)
-    symbolic = Substitution.Substitution(sub, "a", 7) #TODO figure out how many substitution iterations I need to do to reach a minimum of k points
+    pfEigenVector = pfEigenVal(sub)
+    symbolic = Substitution(sub, "a", 7) #TODO figure out how many substitution iterations I need to do to reach a minimum of k points
     symbolic = symbolic[0:k]
-    print(len(symbolic))
     points = []
     xvalue = 0
     keys = list(sub.keys())
