@@ -5,7 +5,7 @@ from Substitution import *
 import time
 
 #Defining drawing function
-def analyzeSubstitution(sub, iterations, debug=False):
+def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
  
     '''-----------------------------------------------------------
     Substitution
@@ -14,7 +14,7 @@ def analyzeSubstitution(sub, iterations, debug=False):
         curtime = time.time()
  
     pfEigenVector = pfEigenVal(sub)
-    result = Substitution(sub, "a", iterations)
+    result = Substitution(sub, initialState, iterations)
     # print("--------------------------------------------------------------")
     # print(f"Substitution: \n{sub}")
     # print(f"Iterations: {iterations}")
@@ -207,9 +207,33 @@ def GUI():
 
 
         if (userinput.strip() == "4"):
+            errorFlag = False
             print("Displaying a segment diagram of the substitution")
-            iterations = 6
-            analyzeSubstitution((sub), iterations)
+            custom = input("Enter c to enter custom parameters or press enter to use default settings (iterations = 5, initialstate 'a'): ")
+            if (custom.strip() == "c"):            
+                iterations = input("Enter a number of iterations: ")
+                initialState = input("Define an initial state ie. (abba): ")
+                #Error checking input for validity
+                try: 
+                    iterations = int(iterations)
+                except:
+                    print("Iterations must be a natural number")
+                    errorFlag = True
+                if (errorFlag == False):
+                    if (iterations < 0):
+                        print("Iterations must be greater than or equal to 0")
+                        errorFlag = True
+                if (errorFlag == False):
+                    for char in initialState:
+                        if (char not in sub.keys()):
+                            print(f"Initialstate: {initialState} is not valid")
+                            errorFlag = True
+
+                if (errorFlag == False):
+                    analyzeSubstitution(sub, iterations, initialState)   
+
+            else: 
+                analyzeSubstitution(sub)
 
 
         if (userinput.strip() == "5"):
