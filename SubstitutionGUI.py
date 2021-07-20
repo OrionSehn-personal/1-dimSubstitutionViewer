@@ -15,16 +15,6 @@ def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
  
     pfEigenVector = pfEigenVal(sub)
     result = Substitution(sub, initialState, iterations)
-    # print("--------------------------------------------------------------")
-    # print(f"Substitution: \n{sub}")
-    # print(f"Iterations: {iterations}")
-    # print(f"Symbolic Representation: \n{result}")
-    # print("--------------------------------------------------------------")
-    # print(f"Matrix: \n{matrix(sub)}")
-    # print(f"Perron-Frobenius Eigenvector: \n{pfEigenVector}")
-    # print(f"Eigenvalues: \n{eigenValues(sub)[0]}")
-    # print(f"Substitution is Pisot: {isPisot(sub)}")
-    # print("--------------------------------------------------------------")
 
     if (debug == True):
         print("Analysis time breakdown:")
@@ -147,9 +137,9 @@ def GUI():
     sub = {"a":"ab",
            "b":"a"}
 
-    exit = False
+    exitflag = False
     userinput = ""
-    while (exit == False):
+    while (exitflag == False):
         print(header)
         print(options, "")
         userinput = input()
@@ -177,7 +167,8 @@ def GUI():
         if (userinput.strip() == "3"):
             errorFlag = False
             print("Printing a symbolic text representaion of the Substitution")
-            custom = input("Enter c to enter custom parameters or press enter to use default settings (iterations = 5, initialstate 'a'): ")
+            print("Default settings = (iterations = 5, initialstate 'a')")
+            custom = input("Enter c to enter custom parameters or press enter to use default: ")            
             if (custom.strip() == "c"):
 
                 iterations = input("Enter a number of iterations: ")
@@ -209,7 +200,8 @@ def GUI():
         if (userinput.strip() == "4"):
             errorFlag = False
             print("Displaying a segment diagram of the substitution")
-            custom = input("Enter c to enter custom parameters or press enter to use default settings (iterations = 5, initialstate 'a'): ")
+            print("Default settings = (iterations = 5, initialstate 'a')")
+            custom = input("Enter c to enter custom parameters or press enter to use default: ")
             if (custom.strip() == "c"):            
                 iterations = input("Enter a number of iterations: ")
                 initialState = input("Define an initial state ie. (abba): ")
@@ -239,7 +231,8 @@ def GUI():
         if (userinput.strip() == "5"):
             errorFlag = False
             print("Displaying diffraction pattern of the Substitution")
-            custom = input("Enter c to enter custom parameters or press enter to use default settings(0 < x < 10, x interval = 0.01, k = 20): ")
+            print("Default settings = (0 < x < 10, x interval = 0.01, k = 20)")
+            custom = input("Enter c to enter custom parameters or press enter to use default: ")
             
             if (custom.strip() == "c"):
                 xlower = input("Enter lower bound for x: ")
@@ -267,7 +260,7 @@ def GUI():
 
         if (userinput.strip() == "6"):
             print("Quit")
-            return
+            exitflag = True
         
 
 GUI()
