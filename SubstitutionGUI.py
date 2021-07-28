@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import collections as mc
+from matplotlib import cm
 from Substitution import *
 import time
 
@@ -131,8 +132,9 @@ def GUI():
     2 - View info about the Substitution
     3 - View a symbolic text representaion of the Substitution
     4 - View a segment diagram of the substitution
-    5 - View the diffraction pattern of the Substitution
-    6 - Quit
+    5 - View the diffraction intensity function for the Substitution
+    6 - View a projection of the diffraction pattern for the Substitution
+    7 - Quit
     '''
     sub = {"a":"ab",
            "b":"a"}
@@ -143,6 +145,7 @@ def GUI():
         print(header)
         print(options, "")
         userinput = input()
+        
         if (userinput.strip() == "1"):
             print("Defining Substitution - (enter nothing to cancel)")
             numVar = input("Number of Variables: ")
@@ -230,7 +233,7 @@ def GUI():
 
         if (userinput.strip() == "5"):
             errorFlag = False
-            print("Displaying diffraction pattern of the Substitution")
+            print("Displaying diffraction intensity function for the Substitution")
             print("Default settings = (0 < x < 10, x interval = 0.01, k = 20)")
             custom = input("Enter c to enter custom parameters or press enter to use default: ")
             
@@ -258,7 +261,15 @@ def GUI():
                 plt.plot(x, y)
                 plt.show()
 
-        if (userinput.strip() == "6"):
+        if(userinput.strip() == "6"):
+            print("Displaying projection of the diffraction pattern for the Substitution")
+            X = projection(sub)
+            lowerbound = 0
+            upperbound = 10
+            plt.imshow(X, extent = [lowerbound,upperbound, lowerbound, upperbound], cmap=cm.get_cmap('binary'))
+            plt.show()
+
+        if (userinput.strip() == "7"):
             print("Quit")
             exitflag = True
         

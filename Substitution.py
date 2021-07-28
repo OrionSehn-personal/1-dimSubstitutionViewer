@@ -228,3 +228,27 @@ def isValid(sub):
 			if (char not in sub.keys()):
 				return False
 	return True 
+
+
+
+'''
+projection(sub, lowerbound=0, upperbound=10, interval=0.01, k=20)
+	Generates a diffraction pattern given a substitution. Displays the diffraction
+	as a projected pattern of lines.
+parameters:
+    sub: Dictionary representing a Substitution from which the diffraction pattern
+         is generated. 
+    lowerbound=0: The lower bound of the diffraction pattern
+    upperbound=10: Upper bound of the diffraction pattern
+    interval=0.01: Space between the individual data points along the x axis
+    k=20: Number of points in the substitution for which to perform the diffraction
+	
+
+return: None
+'''
+
+
+def projection(sub, lowerbound=0, upperbound=10, interval=0.01, k=20):
+	x, y = diffraction(sub, lowerbound, upperbound, interval, k)
+	X, Y = np.meshgrid(y, x)
+	return X
