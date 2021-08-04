@@ -230,8 +230,8 @@ def isValid(sub):
 			if (char not in sub.keys()):
 				return False
 	
-	if (eigenValues(sub) == None): False
-	if (pfEigenVal(sub) == None): False
+	if (type(eigenValues(sub)) == type(None)): return False
+	if (type(pfEigenVal(sub)) == type(None)): return False
 
 	return True 
 
