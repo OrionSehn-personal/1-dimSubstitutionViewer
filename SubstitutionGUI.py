@@ -7,7 +7,7 @@ import time
 
 #Defining drawing function
 def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
- 
+
     '''-----------------------------------------------------------
     Substitution
     -----------------------------------------------------------'''
@@ -30,12 +30,14 @@ def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
  
     segments = []
     xvalue = 0
-    border = 0.05
+    borderPercent = 0.03
     keys = list(sub.keys())
     for segment in result:
-        newSegment = [(xvalue+border, 0)]
-        xvalue += pfEigenVector[keys.index(segment),0]
-        newSegment.append((xvalue-border, 0))
+        segmentLength = pfEigenVector[keys.index(segment),0]
+        segmentBoundary = segmentLength * borderPercent
+        newSegment = [(xvalue + segmentBoundary, 0)]
+        xvalue += segmentLength
+        newSegment.append((xvalue - segmentBoundary, 0))
         segments.append(newSegment)
  
     if (debug == True):
@@ -66,17 +68,22 @@ def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
     '''-----------------------------------------------------------
     Legend Construction
     -----------------------------------------------------------'''
+ 
     legendList = []
     legendCol = []
-    border = 0.025
     xvalue = 0
+    borderPercent = 0.01
     for segment in keys:
-        newSegment = [(xvalue+border, 0)]
-        xvalue += pfEigenVector[keys.index(segment),0]
-        newSegment.append((xvalue-border, 0))
+        segmentLength = pfEigenVector[keys.index(segment),0]
+        segmentBoundary = segmentLength * borderPercent
+        newSegment = [(xvalue + segmentBoundary, 0)]
+        xvalue += segmentLength
+        newSegment.append((xvalue - segmentBoundary, 0))
         legendList.append(newSegment)
         legendCol.append(colorlist[keys.index(segment)])
- 
+
+
+
     '''-----------------------------------------------------------
     Drawing the Segments / Legend
     -----------------------------------------------------------'''
@@ -90,6 +97,7 @@ def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
     ax[0].autoscale
     ax[0].grid()
     ax[0].yaxis.set_visible(False)
+
     xvalue = 0
     for segment in keys:
         pfval = pfEigenVector[keys.index(segment),0]
@@ -102,7 +110,9 @@ def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
     ax[1].autoscale
     ax[1].grid()
     ax[1].yaxis.set_visible(False)
- 
+    fig.suptitle("Substitution Segment Diagram for: " + str(sub).replace("'", ""), fontsize = 16)
+    
+
     if (debug == True):
         posttime = time.time()
         totaltime = posttime - curtime
@@ -110,7 +120,6 @@ def analyzeSubstitution(sub, iterations=5, initialState='a', debug=False):
         print("--------------------------------------------------------------")
 
     plt.show()
-
 
 def substitutioninfo(sub):
     pfEigenVector = pfEigenVal(sub)
@@ -254,19 +263,26 @@ def GUI():
                 if (errorFlag == False):
                     x, y = diffraction(sub, int(xlower), int(xupper), float(xint), int(k))
                     plt.plot(x, y)
+                    plt.title("Substitution Intensity Function for: " + str(sub).replace("'", ""), fontsize = 16)
                     plt.show()
 
             else:
                 x, y = diffraction(sub)
                 plt.plot(x, y)
+                plt.title("Substitution Intensity Function for: " + str(sub).replace("'", ""), fontsize = 16)
+
                 plt.show()
 
         if(userinput.strip() == "6"):
             print("Displaying projection of the diffraction pattern for the Substitution")
+            fig, ax = plt.subplots(1,1)
             X = projection(sub)
             lowerbound = 0
             upperbound = 10
-            plt.imshow(X, extent = [lowerbound,upperbound, lowerbound, upperbound], cmap=cm.get_cmap('binary'))
+            img = ax.imshow(X, extent = [lowerbound,upperbound, lowerbound, upperbound])
+            ax.yaxis.set_visible(False)
+            fig.suptitle("Substitution Projection for: " + str(sub).replace("'", ""), fontsize = 16)
+            fig.colorbar(img)
             plt.show()
 
         if (userinput.strip() == "7"):
