@@ -178,6 +178,8 @@ def diffraction(sub, lowerbound=0, upperbound=10, interval=0.01, k=20):
 
     #TODO Something else
     pfEigenVector = pfEigenVal(sub)
+    
+
     symbolic = Substitution(sub, "a", 7) #TODO figure out how many substitution iterations I need to do to reach a minimum of k points
     symbolic = symbolic[0:k]
     points = []
@@ -227,6 +229,10 @@ def isValid(sub):
 		for char in value:
 			if (char not in sub.keys()):
 				return False
+	
+	if (eigenValues(sub) == None): False
+	if (pfEigenVal(sub) == None): False
+
 	return True 
 
 
