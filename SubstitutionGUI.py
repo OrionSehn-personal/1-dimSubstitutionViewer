@@ -136,6 +136,24 @@ def GUI():
     One Dimenstional Subsitution Viewer - Orion Sehn 2021
 -----------------------------------------------------------------------------'''
 
+    standardSubs = [["Fibonacci", {"a":"ab", "b":"a"}], 
+                    ["2-component Rauzy Fractal", {"a":"acb", "b":"c", "c":"a"}],
+                    ["A->AB, B->C, C->A", {"a":"ab", "b":"c", "c":"a"}],
+                    ["Central Fibonacci", {"a":"ac", "b":"db", "c":"b", "d":"a"}],
+                    ["Infinite component Rauzy Fractal", {"a":"baca", "b":"aac", "c":"a"}],
+                    ["Kidney and its dual", {"a":"ab", "b":"cb", "c":"a" }],
+                    ["Kolakoski-(3,1) symmmetric variant, dual", {"a":"aca", "b":"a", "c":"b"}],
+                    ["Kolakoski-(3,1) variant A, with dual", {"a":"bcc", "b":"ba", "c":"bc"}],
+                    ["Kolakoski-(3,1) variant B, with dual", {"a":"abcc", "b":"a", "c":"bc"}],
+                    ["Kolakoski-(3,1), with dual", {"a":"abc", "b":"ab", "c":"b"}],
+                    ["Non-invertible connected Rauzy Fractal", {"a":"bacb", "b":"abc", "c":"ba"}],
+                    ["Non-reducible 4-letter", {"a":"aad", "b":"cd", "c":"cb", "d":"ab"}],
+                    ["Period Doubling", {"a":"ab", "b":"aa"}],
+                    ["Smallest PV", {"a":"bc", "b":"c", "c":"a"}],
+                    ["Thue Morse", {"a":"ab", "b":"ba"}],
+                    ["Tribonacci", {"a":"ab", "b":"ac", "c":"a"}]
+    ]
+    # print(standardSubs)
     options = '''
     1 - Define a Substitution
     2 - View info about the Substitution
@@ -143,7 +161,8 @@ def GUI():
     4 - View a segment diagram of the substitution
     5 - View the diffraction intensity function for the Substitution
     6 - View a projection of the diffraction pattern for the Substitution
-    7 - Quit
+    7 - Select from saved common substitutions
+    8 - Quit
     '''
     sub = {"a":"ab",
            "b":"a"}
@@ -286,6 +305,26 @@ def GUI():
             plt.show()
 
         if (userinput.strip() == "7"):
+            print("Select from saved substitutions")
+            index = 1
+            for standard in standardSubs:
+                print(f"{index} - {standard}")
+                index += 1
+            userinput = input()
+            try:
+                userinput = int(userinput)
+            except:
+                print("Input Error - Try Again")
+                
+            if (1 <= userinput <= len(standardSubs)):
+                sub = standardSubs[userinput - 1][1]
+                print(f"Substitution {standardSubs[userinput - 1][0]} {standardSubs[userinput - 1][1]} Selected")
+                
+            else:
+                print("Input Error - Try Again")
+            userinput = ""
+
+        if (userinput.strip() == "8"):
             print("Quit")
             exitflag = True
         
