@@ -308,7 +308,7 @@ def GUI():
             print("Select from saved substitutions")
             index = 1
             for standard in standardSubs:
-                print(f"{index} - {standard}")
+                print(f"{index} - {standard[0]}")
                 index += 1
             userinput = input()
             try:
