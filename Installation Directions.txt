@@ -1,0 +1,20 @@
+
+Installation Instructions
+---------------------------------------------------------------------
+
+0. Download the .zip file from my github, 
+	https://github.com/funmaster524/1-dimSubstitutionViewer  
+	(its the little green code button)
+	Unzip the files in the zipped folder or save them somewhere else. 
+
+1. Download Latest Python Version: 
+
+	https://www.python.org/downloads/
+
+2. Open Windows Powershell (Terminal on mac)
+
+3. Run Following command
+
+	py -m pip install matplotlib
+
+4. Right click on SubstitutionGUI.py, open with Python.
