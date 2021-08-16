@@ -184,12 +184,12 @@ def GUI():
                     variable = chr(asciicode)
                     newsub[variable] = input(f"Substitute {variable} with: ").strip()
                     asciicode += 1
-            if isValid(newsub):
-                print("New substitution defined: ")
-                print(newsub)
-                sub = newsub
-            else:
-                print(f"Substitution {newsub} is not a valid substitution")
+                if isValid(newsub):
+                    print("New substitution defined: ")
+                    print(newsub)
+                    sub = newsub
+                else:
+                    print(f"Substitution {newsub} is not a valid substitution")
 
         if (userinput.strip() == "2"):
             print("Printing info about the Substitution")
