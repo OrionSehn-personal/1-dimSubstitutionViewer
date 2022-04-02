@@ -4,10 +4,7 @@ from PIL import Image
 from Substitution import *
 import matplotlib.pyplot as plt
 from matplotlib import collections as mc
-from matplotlib import cm
 import time
-
-
 
 def analyzeSubstitution(sub, iterations=4, initialState='a', debug=False):
 
@@ -194,7 +191,8 @@ else:
         st.text(pfEigenVector)
         st.subheader("Eigenvalues:")
         st.text(eigenValues(sub)[0])
-        st.subheader(f"Substitution is Pisot: {isPisot(sub)}")
+        st.subheader("Substitution is Pisot:")
+        st.text(isPisot(sub))
     
     with colG:
         st.header("Segment Diagram")
@@ -203,4 +201,24 @@ else:
     
     st.markdown('''---''')
 
+
+    colH, colI = st.columns(2)
+
+    with colH:
+        x, y = diffraction(sub)
+        fig, ax = plt.subplots()
+        ax.plot(x, y)
+        plt.title("Substitution Intensity Function for: " + str(sub).replace("'", ""), fontsize = 16)
+        st.pyplot(fig)
     
+    with colI:
+        fig, ax = plt.subplots(1,1)
+        x = projection(sub)
+        lowerbound = 0
+        upperbound = 10
+        img = ax.imshow(x, extent = [lowerbound,upperbound, lowerbound, upperbound])
+        ax.yaxis.set_visible(False)
+        fig.suptitle("Substitution Projection for: " + str(sub).replace("'", ""), fontsize = 16)
+        fig.colorbar(img)
+        st.pyplot(fig)
+
