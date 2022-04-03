@@ -6,6 +6,21 @@ import matplotlib.pyplot as plt
 from matplotlib import collections as mc
 import time
 
+def bmatrix(a):
+    """Returns a LaTeX bmatrix
+
+    :a: numpy array
+    :returns: LaTeX bmatrix as a string
+    """
+    if len(a.shape) > 2:
+        raise ValueError('bmatrix can at most display two dimensions')
+    lines = str(a).replace('[', '').replace(']', '').splitlines()
+    rv = [r'\begin{bmatrix}']
+    rv += ['  ' + ' & '.join(l.split()) + r'\\' for l in lines]
+    rv +=  [r'\end{bmatrix}']
+    return '\n'.join(rv)
+
+
 def analyzeSubstitution(sub, iterations=4, initialState='a', debug=False):
 
 
@@ -159,7 +174,7 @@ with colD:
     st.text("")
     image = Image.open("right_arrow.png")
     for i in range(int(num_variables)):
-        st.image(image, width=93 )
+        st.image(image, width=93)
 
 replace_list = []
 with colE:
@@ -188,18 +203,18 @@ else:
         st.markdown('''---''')
         pfEigenVector = pfEigenVal(sub)
         st.subheader("Matrix:")
-        st.text(matrix(sub))
-
+        st.latex(bmatrix(matrix(sub)))
         st.subheader("Perron-Frobenius Eigenvector:")
-        st.text(pfEigenVector)
+        st.latex(bmatrix(pfEigenVector))
         st.subheader("Eigenvalues:")
-        st.text(eigenValues(sub)[0])
+        result = eigenValues(sub)[0]
+        st.latex(bmatrix(np.asmatrix(result).T))
         st.subheader("Substitution is Pisot:")
-        st.text(isPisot(sub))
+        st.markdown(isPisot(sub))
     
     with colG:
         st.header("Segment Diagram")
-        st.pyplot(analyzeSubstitution(sub))
+        st.pyplot(analyzeSubstitution(sub, initialState=variable_list[0]))
     
     st.markdown('''---''')
 
@@ -208,7 +223,7 @@ else:
 
     with colH:
         st.header("Substitution Intensity Function")
-        x, y = diffraction(sub)
+        x, y = diffraction(sub, initialState=variable_list[0])
         fig, ax = plt.subplots()
         ax.plot(x, y)
         st.pyplot(fig)
@@ -216,7 +231,7 @@ else:
     with colI:
         st.header("Substitution Projection")
         fig, ax = plt.subplots(1,1)
-        x = projection(sub)
+        x = projection(sub, initialstate=variable_list[0])
         lowerbound = 0
         upperbound = 10
         img = ax.imshow(x, extent = [lowerbound,upperbound, lowerbound, upperbound])
