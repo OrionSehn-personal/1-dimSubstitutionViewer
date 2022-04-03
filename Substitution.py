@@ -17,11 +17,11 @@ return: The n'th iteration of the subsitution
 """
 
 
-def Substitution(substitution, initialState, Iterations):
+def Substitution(substitution, initialState, iterations):
     # print(f"iteration: {Iterations}")
     # print(f"state: {initialState}")
     # base case: end of iterations
-    if Iterations == 0:
+    if iterations == 0:
         return initialState
 
     # replace each occurance of a character with its substitution
@@ -30,7 +30,7 @@ def Substitution(substitution, initialState, Iterations):
         newState = newState + substitution[char]
 
     # recursively call Substitution() with one less iteration
-    return Substitution(substitution, newState, Iterations - 1)
+    return Substitution(substitution, newState, iterations - 1)
 
 
 """
@@ -195,13 +195,13 @@ return: Two arrays x and y which represent the x and y coordinates of the points
 """
 
 
-def diffraction(sub, lowerbound=0, upperbound=10, interval=0.01, k=20):
+def diffraction(sub, lowerbound=0, upperbound=10, interval=0.01, k=20, initialState="a"):
 
     # TODO Something else
     pfEigenVector = pfEigenVal(sub)
 
     symbolic = Substitution(
-        sub, "a", 7
+        sub, initialState=initialState, iterations=7
     )  # TODO figure out how many substitution iterations I need to do to reach a minimum of k points
     symbolic = symbolic[0:k]
     points = []
@@ -279,7 +279,7 @@ return: None
 """
 
 
-def projection(sub, lowerbound=0, upperbound=10, interval=0.01, k=20):
-    x, y = diffraction(sub, lowerbound, upperbound, interval, k)
+def projection(sub, lowerbound=0, upperbound=10, interval=0.01, k=20, initialstate="a"):
+    x, y = diffraction(sub, lowerbound, upperbound, interval, k, initialState=initialstate)
     X, Y = np.meshgrid(y, x)
     return X

@@ -6,6 +6,21 @@ import matplotlib.pyplot as plt
 from matplotlib import collections as mc
 import time
 
+def bmatrix(a):
+    """Returns a LaTeX bmatrix
+
+    :a: numpy array
+    :returns: LaTeX bmatrix as a string
+    """
+    if len(a.shape) > 2:
+        raise ValueError('bmatrix can at most display two dimensions')
+    lines = str(a).replace('[', '').replace(']', '').splitlines()
+    rv = [r'\begin{bmatrix}']
+    rv += ['  ' + ' & '.join(l.split()) + r'\\' for l in lines]
+    rv +=  [r'\end{bmatrix}']
+    return '\n'.join(rv)
+
+
 def analyzeSubstitution(sub, iterations=4, initialState='a', debug=False):
 
 
@@ -92,9 +107,7 @@ def analyzeSubstitution(sub, iterations=4, initialState='a', debug=False):
     ax[1].add_collection(linecol)
     ax[1].margins(0.01)
     ax[1].grid()
-    ax[1].yaxis.set_visible(False)
-    fig.suptitle("Substitution Segment Diagram for: " + str(sub).replace("'", ""), fontsize = 16)
-    
+    ax[1].yaxis.set_visible(False)    
 
     if (debug == True):
         posttime = time.time()
@@ -141,31 +154,35 @@ with colB:
 
 st.markdown('''---''')
 st.header("Substitution Definition")
-
+num_variables = st.number_input("Number of Variables", value=len(standardSubs[selectedSub]), min_value=1)
 
 colC, colD , colE= st.columns((5, 1, 5))
 
 variable_list = []
 
+selected_variables = list(standardSubs[selectedSub].keys())
+selected_values = list(standardSubs[selectedSub].values())
+
 with colC:
-    rule_counter = 0
-    for rule in standardSubs[selectedSub]:
-        rule_counter += 1
-        variable_list.append(st.text_input(f"Tile {rule_counter}", value=rule))
+    for i in range(int(num_variables)):
+        if i < len(selected_variables):
+            variable_list.append(st.text_input(f"Tile {i}", value=selected_variables[i]))
+        else:
+            variable_list.append(st.text_input(f"Tile {i}", value=""))
 
 with colD:
     st.text("")
     image = Image.open("right_arrow.png")
-    for i in range(len(standardSubs[selectedSub])):
-        st.image(image, width=93 )
+    for i in range(int(num_variables)):
+        st.image(image, width=93)
 
 replace_list = []
 with colE:
-    rule_counter = 0
-    for rule in standardSubs[selectedSub]:
-        rule_counter += 1
-        replace_list.append(st.text_input(f"Replace Tile Rule {rule_counter}", value=standardSubs[selectedSub][rule]))
-
+    for i in range(int(num_variables)):
+        if i < len(selected_variables):
+            replace_list.append(st.text_input(f"Replace Tile {i}", value=selected_values[i]))
+        else:
+            replace_list.append(st.text_input(f"Replace Tile {i}", value=""))
 
 sub = {}
 
@@ -186,18 +203,18 @@ else:
         st.markdown('''---''')
         pfEigenVector = pfEigenVal(sub)
         st.subheader("Matrix:")
-        st.text(matrix(sub))
+        st.latex(bmatrix(matrix(sub)))
         st.subheader("Perron-Frobenius Eigenvector:")
-        st.text(pfEigenVector)
+        st.latex(bmatrix(pfEigenVector))
         st.subheader("Eigenvalues:")
-        st.text(eigenValues(sub)[0])
+        result = eigenValues(sub)[0]
+        st.latex(bmatrix(np.asmatrix(result).T))
         st.subheader("Substitution is Pisot:")
-        st.text(isPisot(sub))
+        st.markdown(isPisot(sub))
     
     with colG:
         st.header("Segment Diagram")
-        st.markdown('''---''')
-        st.pyplot(analyzeSubstitution(sub))
+        st.pyplot(analyzeSubstitution(sub, initialState=variable_list[0]))
     
     st.markdown('''---''')
 
@@ -205,20 +222,20 @@ else:
     colH, colI = st.columns(2)
 
     with colH:
-        x, y = diffraction(sub)
+        st.header("Substitution Intensity Function")
+        x, y = diffraction(sub, initialState=variable_list[0])
         fig, ax = plt.subplots()
         ax.plot(x, y)
-        plt.title("Substitution Intensity Function for: " + str(sub).replace("'", ""), fontsize = 16)
         st.pyplot(fig)
     
     with colI:
+        st.header("Substitution Projection")
         fig, ax = plt.subplots(1,1)
-        x = projection(sub)
+        x = projection(sub, initialstate=variable_list[0])
         lowerbound = 0
         upperbound = 10
         img = ax.imshow(x, extent = [lowerbound,upperbound, lowerbound, upperbound])
         ax.yaxis.set_visible(False)
-        fig.suptitle("Substitution Projection for: " + str(sub).replace("'", ""), fontsize = 16)
         fig.colorbar(img)
         st.pyplot(fig)
 
