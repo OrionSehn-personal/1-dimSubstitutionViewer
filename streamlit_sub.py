@@ -1,10 +1,12 @@
 from select import select
+from turtle import width
 import streamlit as st
 from PIL import Image
 from Substitution import *
 import matplotlib.pyplot as plt
 from matplotlib import collections as mc
 import time
+from string import ascii_lowercase
 
 def bmatrix(a):
     """Returns a LaTeX bmatrix
@@ -153,6 +155,19 @@ with colB:
     st.caption("Feel free to reach out to me at sehno@mymacewan.ca")
 
 st.markdown('''---''')
+with st.expander("Introductory Explaination"):
+    st.caption("A tile substitution is a method for constructing highly ordered tilings, most importantly, some substitutions generate aperiodic tilings.")
+    st.caption("A substitution consists of a set of rules, which dictates what a tile will be substituted with on each iteration.")
+    image = Image.open("house_rule.png")
+    st.image(image, width=250)
+    st.caption("This rule is applied to each tile in the tiling recursively with each iteration")
+    image = Image.open("House_substitution_tiling.svg.png")
+    st.image(image, width=500)
+    st.caption("Eventually, these tiles will tile the plane.")
+    image = Image.open("house_patch.gif")
+    st.image(image)
+
+    st.caption("This is a tool which visualizes most one dimensional substitutions. These follow many of the same rules, but are simpler as they are just line segments. Additionally some key associated information is shown, notably a Segment Diagram, the Substitution's PF Eigenvector, as well as a graph of its Bragg Diffraction Intensity Function.")
 st.header("Substitution Definition")
 num_variables = st.number_input("Number of Variables", value=len(standardSubs[selectedSub]), min_value=1)
 
@@ -165,10 +180,7 @@ selected_values = list(standardSubs[selectedSub].values())
 
 with colC:
     for i in range(int(num_variables)):
-        if i < len(selected_variables):
-            variable_list.append(st.text_input(f"Tile {i}", value=selected_variables[i]))
-        else:
-            variable_list.append(st.text_input(f"Tile {i}", value=""))
+            variable_list.append(st.text_input(f"Tile {i+1}", value=ascii_lowercase[i], disabled=True))
 
 with colD:
     st.text("")
@@ -180,14 +192,14 @@ replace_list = []
 with colE:
     for i in range(int(num_variables)):
         if i < len(selected_variables):
-            replace_list.append(st.text_input(f"Replace Tile {i}", value=selected_values[i]))
+            replace_list.append(st.text_input(f"Replace Tile {i+1}", value=selected_values[i]))
         else:
-            replace_list.append(st.text_input(f"Replace Tile {i}", value=""))
+            replace_list.append(st.text_input(f"Replace Tile {i+1}", value=""))
 
 sub = {}
 
-for i in range(len(variable_list)):
-    sub[variable_list[i]] = replace_list[i]
+for i in range(len(replace_list)):
+    sub[ascii_lowercase[i]] = replace_list[i]
 
 st.markdown('''---''')
 
@@ -203,7 +215,7 @@ else:
         st.markdown('''---''')
         pfEigenVector = pfEigenVal(sub)
         st.subheader("Matrix:")
-        st.latex(bmatrix(matrix(sub)))
+        st.latex(bmatrix(np.transpose(matrix(sub))))
         st.subheader("Perron-Frobenius Eigenvector:")
         st.latex(bmatrix(pfEigenVector))
         st.subheader("Eigenvalues:")
@@ -214,7 +226,7 @@ else:
     
     with colG:
         st.header("Segment Diagram")
-        st.pyplot(analyzeSubstitution(sub, initialState=variable_list[0]))
+        st.pyplot(analyzeSubstitution(sub, initialState="a"))
     
     st.markdown('''---''')
 
@@ -223,7 +235,7 @@ else:
 
     with colH:
         st.header("Substitution Intensity Function")
-        x, y = diffraction(sub, initialState=variable_list[0])
+        x, y = diffraction(sub, initialState="a")
         fig, ax = plt.subplots()
         ax.plot(x, y)
         st.pyplot(fig)
@@ -231,7 +243,7 @@ else:
     with colI:
         st.header("Substitution Projection")
         fig, ax = plt.subplots(1,1)
-        x = projection(sub, initialstate=variable_list[0])
+        x = projection(sub, initialstate="a")
         lowerbound = 0
         upperbound = 10
         img = ax.imshow(x, extent = [lowerbound,upperbound, lowerbound, upperbound])
