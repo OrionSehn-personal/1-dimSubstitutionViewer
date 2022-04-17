@@ -167,7 +167,7 @@ with st.expander("Introductory Explaination"):
 
     st.caption("This is a tool which visualizes most one dimensional substitutions. These follow many of the same rules, but are simpler as they are just line segments. Additionally some key associated information is shown, notably a Segment Diagram, the Substitution's PF Eigenvector, as well as a graph of its Bragg Diffraction Intensity Function.")
 st.header("Substitution Definition")
-num_variables = st.number_input("Number of Variables", value=len(standardSubs[selectedSub]), min_value=1)
+num_variables = st.number_input("Number of Variables", value=len(standardSubs[selectedSub]), min_value=1, max_value=10)
 
 colC, colD , colE= st.columns((5, 1, 5))
 
