@@ -153,7 +153,7 @@ with colB:
     st.caption("Feel free to reach out to me at sehno@mymacewan.ca")
 
 st.markdown('''---''')
-with st.expander("Introductory Explaination"):
+with st.expander("Introductory Explanation"):
     st.caption("A tile substitution is a method for constructing highly ordered tilings, most importantly, some substitutions generate aperiodic tilings.")
     st.caption("A substitution consists of a set of rules, which dictates what a tile will be substituted with on each iteration.")
     image = Image.open("house_rule.png")
