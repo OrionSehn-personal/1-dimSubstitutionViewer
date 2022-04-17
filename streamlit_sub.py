@@ -1,5 +1,3 @@
-from select import select
-from turtle import width
 import streamlit as st
 from PIL import Image
 from Substitution import *
